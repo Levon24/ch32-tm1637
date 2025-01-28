@@ -1,23 +1,24 @@
 #include "debug.h"
+#include "tm1637.h"
 
 /* Global define */
-#define LED7SEG_CLK GPIO_Pin_0
-#define LED7SEG_DIO GPIO_Pin_1
+
 
 /* Global Variable */
 
-void GPIO_Toggle_INIT(void) {
-  GPIO_InitTypeDef GPIO_InitStructure = {0};
-
+void GPIO_Ports_Init(void) {
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_30MHz;
-  GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+  GPIO_InitTypeDef gpio_InitStructure = {0};
+  gpio_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
+  gpio_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  gpio_InitStructure.GPIO_Speed = GPIO_Speed_30MHz;
+  GPIO_Init(GPIOC, &gpio_InitStructure);
 }
 
 int main(void) {
-  u8 i = 0;
+  u16 counter = 0;
+  u8 segments[TM1637_LENGTH] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d};
 
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
   SystemCoreClockUpdate();
@@ -30,12 +31,15 @@ int main(void) {
 #endif
   printf("SystemClk: %d\r\n", SystemCoreClock);
   printf("ChipID: %08x\r\n", DBGMCU_GetCHIPID());
-  printf("GPIO Toggle TEST\r\n");
+  printf("GPIO TM1637 TEST\r\n");
     
-  GPIO_Toggle_INIT();
-
+  GPIO_Ports_Init();
+  
   while (1) {
     Delay_Ms(250);
-    GPIO_WriteBit(GPIOC, GPIO_Pin_0, (i == 0) ? (i = Bit_SET) : (i = Bit_RESET));
+    
+    counter++;
+    //tm1637_write_segments(segments);
+    tm1637_write_int(counter);
   }
 }

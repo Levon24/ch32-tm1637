@@ -21,6 +21,7 @@
 			"*.cc": "cpp",
 			"*.hh": "cpp",
 			"*.h++": "cpp"
-		}
+		},
+		"editor.tabSize": 2
 	}
 }
