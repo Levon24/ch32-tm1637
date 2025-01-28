@@ -14,7 +14,7 @@
 /* Exported Functions */
 void tm1637_write_segments(const u8 *segments);
 void tm1637_write_int(u16 value);
-
+void tm1637_set_brightness(u8 level);
 
 #ifdef __cplusplus
 }

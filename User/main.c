@@ -18,7 +18,7 @@ void GPIO_Ports_Init(void) {
 
 int main(void) {
   u16 counter = 0;
-  u8 segments[TM1637_LENGTH] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d};
+  //u8 segments[TM1637_LENGTH] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d};
 
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
   SystemCoreClockUpdate();
@@ -36,10 +36,11 @@ int main(void) {
   GPIO_Ports_Init();
   
   while (1) {
-    Delay_Ms(250);
+    Delay_Ms(100);
     
     counter++;
     //tm1637_write_segments(segments);
+    tm1637_set_brightness(counter % 10);
     tm1637_write_int(counter);
   }
 }

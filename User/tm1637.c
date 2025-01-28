@@ -11,6 +11,7 @@ const u8 tm1637_minus = 0x40;
 const u8 tm1637_dot = 0x80;
 const u8 tm1637_maping[] = {2, 1, 0, 5, 4, 3};
 const u8 tm1637_digits[] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f};
+
 u8 tm1637_brightness = 0x08 | 0x07; // On + Brightness
 
 /**
@@ -139,4 +140,14 @@ void tm1637_write_int(u16 value) {
   }
 
   tm1637_write_segments(segments);              
+}
+
+/**
+ * @brief 
+ * 
+ * @param level 
+ */
+void tm1637_set_brightness(u8 level) {
+
+  tm1637_brightness = 0x08 | (level & 0x07);
 }
